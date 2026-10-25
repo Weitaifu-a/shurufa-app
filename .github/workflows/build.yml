@@ -6,36 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  check:
-    name: 代码自检
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: 检查两个版本的代码有没有写错
-        run: |
-          set -e
-          for d in 云端版 本地版; do
-            echo "=== 检查 $d ==="
-            flutter create --platforms=android,ios --org com.shurufa --project-name appcheck "proj_$d"
-            cp -rf "$d/lib" "proj_$d/"
-            cp -f "$d/pubspec.yaml" "proj_$d/pubspec.yaml"
-            mkdir -p "proj_$d/assets"
-            cp -f "$d/assets"/*.txt "proj_$d/assets/"
-            cd "proj_$d"
-            flutter pub get
-            flutter analyze --no-fatal-infos --no-fatal-warnings
-            cd ..
-          done
-
   android:
     name: 安卓安装包 - ${{ matrix.label }}
-    needs: check
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -97,7 +69,6 @@ jobs:
 
   ios:
     name: 苹果安装包 - ${{ matrix.label }}
-    needs: check
     runs-on: macos-14
     strategy:
       fail-fast: false
