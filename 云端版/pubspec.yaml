@@ -1,0 +1,19 @@
+name: shurufa
+description: 拼音输入面板（自动组词 / 成语 / 自动翻译）
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/words.txt
+    - assets/idioms.txt
+    - assets/cedict.txt
