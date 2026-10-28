@@ -6,6 +6,41 @@ on:
   workflow_dispatch:
 
 jobs:
+  android-ime:
+    name: 安卓系统输入法（可切换）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.0'
+
+      - name: 准备词库
+        run: |
+          set -e
+          mkdir -p android-ime/app/src/main/assets
+          cp 云端版/assets/words.txt android-ime/app/src/main/assets/
+          cp 云端版/assets/idioms.txt android-ime/app/src/main/assets/
+          cp 云端版/assets/cedict.txt android-ime/app/src/main/assets/
+          ls -la android-ime/app/src/main/assets/
+
+      - name: 编译系统输入法
+        run: |
+          cd android-ime
+          gradle assembleRelease --no-daemon --stacktrace
+
+      - name: 上传
+        uses: actions/upload-artifact@v4
+        with:
+          name: 柠檬拼音-系统输入法-安卓
+          path: android-ime/app/build/outputs/apk/release/app-release.apk
+
   android:
     name: 安卓安装包 - ${{ matrix.label }}
     runs-on: ubuntu-latest
