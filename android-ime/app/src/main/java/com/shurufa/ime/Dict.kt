@@ -44,9 +44,8 @@ object Dict {
             runCatching {
                 ctx.assets.open("words.txt").use { ins ->
                     val r = ins.bufferedReader(Charsets.UTF_8)
-                    var line: String?
                     while (true) {
-                        line = r.readLine() ?: break
+                        val line = r.readLine() ?: break
                         val i = line.indexOf('\t')
                         if (i <= 1) continue
                         val w = line.substring(0, i)
@@ -63,9 +62,8 @@ object Dict {
             runCatching {
                 ctx.assets.open("idioms.txt").use { ins ->
                     val r = ins.bufferedReader(Charsets.UTF_8)
-                    var line: String?
                     while (true) {
-                        line = r.readLine() ?: break
+                        val line = r.readLine() ?: break
                         val a = line.indexOf('\t')
                         if (a <= 1) continue
                         val w = line.substring(0, a)
@@ -84,9 +82,8 @@ object Dict {
             runCatching {
                 ctx.assets.open("cedict.txt").use { ins ->
                     val r = ins.bufferedReader(Charsets.UTF_8)
-                    var line: String?
                     while (true) {
-                        line = r.readLine() ?: break
+                        val line = r.readLine() ?: break
                         val i = line.indexOf('\t')
                         if (i <= 0) continue
                         zhEn[line.substring(0, i)] = line.substring(i + 1)
